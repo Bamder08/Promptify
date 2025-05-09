@@ -34,7 +34,7 @@ function Hero() {
     <section className="min-h-screen flex flex-col justify-start items-center text-center px-4 pt-52">
       <h1
         ref={titleRef}
-        className="text-4xl md:text-6xl font-bold text-white mb-4"
+        className="text-4xl md:text-5xl font-bold mb-16 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500"
       >
         Crea mejores prompts para IA con Promptify
       </h1>

@@ -18,7 +18,7 @@ function HowItWorks() {
 
   return (
     <section ref={sectionRef} className="px-4 bg-gray-900 text-white text-center pb-10">
-      <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold mb-16 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
+      <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold mb-16 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
         Cómo Funciona
       </h2>
       <div className="grid gap-8 md:grid-cols-3">
