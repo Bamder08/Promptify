@@ -6,12 +6,11 @@ Este proyecto tiene como objetivo practicar y demostrar habilidades en desarroll
 
 ## 🚀 Características
 
-- Scroll fluido con **Lenis**
 - Animaciones suaves con **GSAP**
 - Estilo moderno y limpio con **Tailwind CSS**
 - Componentes React modulares
 - Diseño 100% responsive
-- Formulario de contacto simulado
+- Formulario de contacto
 - SEO básico optimizado
 - Arquitectura escalable
 

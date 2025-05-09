@@ -2,6 +2,7 @@ import Benefits from "./sections/Benefits";
 import Contact from "./sections/Contact";
 import Hero from "./sections/Hero";
 import HowItWorks from "./sections/HowItWorks";
+import Footer from "./sections/Footer";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <HowItWorks />
       <Benefits />
       <Contact />
+      <Footer />
     </main>
   );
 }
