@@ -1,4 +1,16 @@
 function Hero() {
+  const titleRef = useRef(null);
+  const subtitleRef = useRef(null);
+  const buttonRef = useRef(null);
+
+  useEffect(() => {
+    const tl = gsap.timeline({ defaults: { duration: 1, ease: "power3.out" } });
+
+    tl.from(titleRef.current, { y: 50, opacity: 0 })
+      .from(subtitleRef.current, { y: 50, opacity: 0 }, "-=0.6")
+      .from(buttonRef.current, { y: 50, opacity: 0 }, "-=0.6");
+  }, []);
+
   return (
     <section className="min-h-screen flex flex-col justify-center items-center text-center px-4">
       <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
