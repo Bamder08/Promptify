@@ -1,4 +1,5 @@
 import Benefits from "./sections/Benefits";
+import Contact from "./sections/Contact";
 import Hero from "./sections/Hero";
 import HowItWorks from "./sections/HowItWorks";
 
@@ -8,6 +9,7 @@ function App() {
       <Hero />
       <HowItWorks />
       <Benefits />
+      <Contact />
     </main>
   );
 }
