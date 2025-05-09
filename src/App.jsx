@@ -1,5 +1,5 @@
 import Hero from "./sections/Hero";
-import HowItWorks from "./sections/HowItWorks/HowItWorks";
+import HowItWorks from "./sections/HowItWorks";
 
 function App() {
   return (
