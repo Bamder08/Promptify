@@ -31,7 +31,7 @@ function Hero() {
   }, []);
 
   return (
-    <section className="min-h-screen flex flex-col justify-center items-center text-center px-4">
+    <section className="min-h-screen flex flex-col justify-start items-center text-center px-4 pt-32 pb-10">
       <h1
         ref={titleRef}
         className="text-4xl md:text-6xl font-bold text-white mb-6"
