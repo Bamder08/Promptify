@@ -31,18 +31,18 @@ function Hero() {
   }, []);
 
   return (
-    <section className="min-h-screen flex flex-col justify-start items-center text-center px-4 pt-32 pb-10">
+    <section className="min-h-screen flex flex-col justify-start items-center text-center px-4 pt-52">
       <h1
         ref={titleRef}
-        className="text-4xl md:text-6xl font-bold text-white mb-6"
+        className="text-4xl md:text-6xl font-bold text-white mb-4"
       >
         Crea mejores prompts para IA con Promptify
       </h1>
       <p
         ref={subtitleRef}
-        className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl"
+        className="text-lg md:text-xl text-gray-300 mb-6 max-w-2xl"
       >
-        Una herramienta ficticia que te ayuda a generar prompts efectivos,
+        Una herramienta que te ayuda a generar prompts efectivos,
         rápidos y adaptados a cualquier asistente de inteligencia artificial.
       </p>
       <button
