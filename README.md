@@ -19,10 +19,9 @@ Este proyecto tiene como objetivo practicar y demostrar habilidades en desarroll
 
 - **React** (v18+)
 - **Tailwind CSS**
-- **Lenis** (scroll suave)
 - **GSAP** (animaciones)
 - **Vite** (como bundler rápido)
-- **EmailJS** o simulación de API para el formulario (más adelante)
+- **EmailJS** Para el envio del formulario
 - **Headless UI** o componentes accesibles
 
 ## 👨‍💻 Autor
