@@ -1,8 +1,10 @@
+import Hero from "./sections/Hero";
+
 function App() {
   return (
-    <div className="text-3xl font-bold text-center text-blue-500 mt-10">
-      Tailwind está funcionando 😎
-    </div>
+    <main className="bg-[#0f172a] text-white">
+      <Hero />
+    </main>
   );
 }
 
