@@ -1,6 +1,30 @@
 import { FaGithub, FaLinkedin, FaMapMarkerAlt } from "react-icons/fa";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Footer() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleNavigateToSection = (sectionId) => {
+    if (location.pathname === "/") {
+      // Ya estás en la landing → scroll directo
+      const target = document.getElementById(sectionId);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      // Estás en otra página → navega a "/" y espera que cargue
+      navigate("/", { replace: false });
+
+      setTimeout(() => {
+        const target = document.getElementById(sectionId);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 300); 
+    }
+  };
+
   return (
     <footer className="bg-gray-800 text-gray-300 px-6 py-10 md:px-20">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-10">
@@ -8,7 +32,8 @@ export default function Footer() {
         <div>
           <h2 className="text-white text-2xl font-bold mb-4">Promptify</h2>
           <p className="text-sm text-gray-400 max-w-sm">
-            Crea, organiza y mejora tus prompts de IA con nuestra herramienta intuitiva y poderosa.
+            Crea, organiza y mejora tus prompts de IA con nuestra herramienta
+            intuitiva y poderosa.
           </p>
         </div>
 
@@ -17,9 +42,21 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-3">Enlaces útiles</h3>
             <ul className="space-y-2 text-sm">
-              <li><a href="#home" className="hover:text-white">Inicio</a></li>
-              <li><a href="#characters" className="hover:text-white">Características</a></li>
-              <li><a href="#contact" className="hover:text-white">Contacto</a></li>
+              <li>
+                <button onClick={() => handleNavigateToSection("home")} className="hover:text-white">
+      Inicio
+    </button>
+              </li>
+              <li>
+                <button onClick={() => handleNavigateToSection("characters")} className="hover:text-white">
+      Características
+    </button>
+              </li>
+              <li>
+                <button onClick={() => handleNavigateToSection("contact")} className="hover:text-white">
+      Contacto
+    </button>
+              </li>
             </ul>
           </div>
 
@@ -28,12 +65,22 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-3">Contacto</h3>
             <ul className="space-y-3 text-sm">
               <li>
-                <a href="https://github.com/Bamder08" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-[#7E5BEF]">
+                <a
+                  href="https://github.com/Bamder08"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:text-[#7E5BEF]"
+                >
                   <FaGithub /> GitHub
                 </a>
               </li>
               <li>
-                <a href="https://www.linkedin.com/in/mateo-mart%C3%ADnez-92205b336/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-[#7E5BEF]">
+                <a
+                  href="https://www.linkedin.com/in/mateo-mart%C3%ADnez-92205b336/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:text-[#7E5BEF]"
+                >
                   <FaLinkedin /> LinkedIn
                 </a>
               </li>
