@@ -21,7 +21,7 @@ export default function Footer() {
         if (target) {
           target.scrollIntoView({ behavior: "smooth" });
         }
-      }, 300); 
+      }, 300);
     }
   };
 
@@ -43,19 +43,28 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-3">Enlaces útiles</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <button onClick={() => handleNavigateToSection("home")} className="hover:text-white">
-      Inicio
-    </button>
+                <button
+                  onClick={() => handleNavigateToSection("home")}
+                  className="hover:text-white"
+                >
+                  Inicio
+                </button>
               </li>
               <li>
-                <button onClick={() => handleNavigateToSection("characters")} className="hover:text-white">
-      Características
-    </button>
+                <button
+                  onClick={() => handleNavigateToSection("characters")}
+                  className="hover:text-white"
+                >
+                  Características
+                </button>
               </li>
               <li>
-                <button onClick={() => handleNavigateToSection("contact")} className="hover:text-white">
-      Contacto
-    </button>
+                <button
+                  onClick={() => handleNavigateToSection("contact")}
+                  className="hover:text-white"
+                >
+                  Contacto
+                </button>
               </li>
             </ul>
           </div>
