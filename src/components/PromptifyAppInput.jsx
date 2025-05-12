@@ -1,10 +1,23 @@
 import { useState } from "react";
+import { getRemainingUses, incrementUsage } from "../utils/usageLimiter"; // ajusta el path si es necesario
 
 function PromptInput({ onResult }) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [limitReached, setLimitReached] = useState(false);
 
   const handleGenerate = async () => {
+    const remaining = getRemainingUses();
+
+    if (remaining <= 0) {
+      if (remaining <= 0) {
+        setLimitReached(true);
+        return;
+      }
+
+      return;
+    }
+
     if (!input.trim()) return;
     setLoading(true);
 
@@ -16,6 +29,7 @@ function PromptInput({ onResult }) {
       });
 
       const data = await response.json();
+      incrementUsage();
       onResult(data.prompt);
     } catch (error) {
       console.error("Error generando prompt:", error);
@@ -41,6 +55,11 @@ function PromptInput({ onResult }) {
       >
         {loading ? "Generando..." : "Generar Prompt"}
       </button>
+      {limitReached && (
+        <p className="mt-4 text-red-400 font-medium text-center">
+          Has alcanzado el límite gratuito de hoy. Intenta nuevamente mañana.
+        </p>
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PromptInput from "../components/PromptifyAppInput"; 
+import PromptInput from "../components/PromptifyAppInput";
 
 function PromptifyApp() {
   const navigate = useNavigate();
