@@ -24,7 +24,7 @@ app.post("/api/generate", async (req, res) => {
 
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", // puedes cambiar a gpt-4 si tienes acceso
+      model: "gpt-3.5-turbo", 
       messages: [
         {
           role: "system",
