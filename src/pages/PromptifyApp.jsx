@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PromptInput from "../components/PromptifyAppInput"; 
 
 function PromptifyApp() {
   const navigate = useNavigate();
+  const [result, setResult] = useState("");
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white p-8">
@@ -12,10 +15,18 @@ function PromptifyApp() {
         ← Volver al inicio
       </button>
 
-      <h1 className="text-4xl font-bold mb-6 text-blue-400">Bienvenido a Promptify</h1>
-      <p className="text-lg text-gray-300">
-        Aquí podrás comenzar a generar, guardar y optimizar tus prompts de IA.
-      </p>
+      <h1 className="text-3xl md:text-4xl font-bold text-blue-400 mb-4 text-center">
+        Generador de Prompts de IA
+      </h1>
+
+      <PromptInput onResult={setResult} />
+
+      {result && (
+        <div className="bg-gray-900 p-6 rounded-xl max-w-3xl mx-auto mt-6 border border-gray-700">
+          <h2 className="text-xl font-semibold mb-3 text-green-400">Prompt generado:</h2>
+          <p className="text-gray-200 whitespace-pre-wrap">{result}</p>
+        </div>
+      )}
     </div>
   );
 }
