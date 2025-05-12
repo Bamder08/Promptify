@@ -1,10 +1,12 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { useNavigate } from "react-router-dom";
 
 function Hero() {
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
   const buttonRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const tl = gsap.timeline({ defaults: { duration: 1, ease: "power3.out" } });
@@ -46,6 +48,7 @@ function Hero() {
         rápidos y adaptados a cualquier asistente de inteligencia artificial.
       </p>
       <button
+        onClick={() => navigate("/app")}
         ref={buttonRef}
         className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg text-lg transition" 
       >
