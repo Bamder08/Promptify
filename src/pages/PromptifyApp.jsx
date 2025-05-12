@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PromptInput from "../components/PromptifyAppInput";
+import ModelSelector from "../components/ModelSelector";
 
 function PromptifyApp() {
   const navigate = useNavigate();
   const [result, setResult] = useState("");
+  const [selectedModel, setSelectedModel] = useState("gpt-3.5-turbo");
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white p-8">
@@ -14,6 +16,10 @@ function PromptifyApp() {
       >
         ← Volver al inicio
       </button>
+      <ModelSelector
+        selectedModel={selectedModel}
+        setSelectedModel={setSelectedModel}
+      />
 
       <h1 className="text-3xl md:text-4xl font-bold text-blue-400 mb-4 text-center">
         Generador de Prompts de IA
