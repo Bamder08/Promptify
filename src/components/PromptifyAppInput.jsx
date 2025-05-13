@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { getRemainingUses, incrementUsage } from "../utils/usageLimiter"; // ajusta el path si es necesario
+import { getRemainingUses, incrementUsage } from "../utils/usageLimiter";
 
-function PromptInput({ onResult, selectedModel }) {
-  const [input, setInput] = useState("");
+function PromptInput({ onResult, selectedModel, setInput }) {
+  const [localInput, setLocalInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [limitReached, setLimitReached] = useState(false);
 
@@ -10,15 +10,12 @@ function PromptInput({ onResult, selectedModel }) {
     const remaining = getRemainingUses();
 
     if (remaining <= 0) {
-      if (remaining <= 0) {
-        setLimitReached(true);
-        return;
-      }
-
+      setLimitReached(true);
       return;
     }
 
-    if (!input.trim()) return;
+    if (!localInput.trim()) return;
+
     setLoading(true);
 
     try {
@@ -26,12 +23,13 @@ function PromptInput({ onResult, selectedModel }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          input,
-          model: selectedModel, // 👈 enviamos el modelo elegido
+          input: localInput,
+          model: selectedModel,
         }),
       });
 
       const data = await response.json();
+
       if (!response.ok) {
         onResult(data.error || "Error inesperado.");
         return;
@@ -53,8 +51,11 @@ function PromptInput({ onResult, selectedModel }) {
         className="w-full p-4 rounded-lg bg-gray-900 text-white border border-gray-600 mb-4 resize-none focus:outline-none"
         rows="5"
         placeholder="Describe lo que quieres lograr con tu IA..."
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
+        value={localInput}
+        onChange={(e) => {
+          setLocalInput(e.target.value);  // estado local para control del input
+          setInput(e.target.value);       // estado global para guardar historial
+        }}
       />
       <button
         onClick={handleGenerate}
