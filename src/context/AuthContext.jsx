@@ -8,15 +8,19 @@ export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  // Observar cambios de sesión
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
+      setLoading(false);
     });
     return () => unsub();
   }, []);
 
-  const login = async () => {
+  // Login con Google
+  const loginWithGoogle = async () => {
     try {
       await signInWithPopup(auth, provider);
     } catch (err) {
@@ -24,11 +28,12 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Logout
   const logout = () => signOut(auth);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
+    <AuthContext.Provider value={{ user, loginWithGoogle, logout, loading }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 }

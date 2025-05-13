@@ -5,6 +5,7 @@ import ModelSelector from "../components/ModelSelector";
 import Sidebar from "../components/Sidebar";
 import { saveConversation } from "../utils/historyManager";
 import { v4 as uuidv4 } from "uuid";
+import { useAuth } from "../context/AuthContext";
 
 function PromptifyApp() {
   const navigate = useNavigate();
@@ -12,11 +13,10 @@ function PromptifyApp() {
   const [input, setInput] = useState("");
   const [selectedModel, setSelectedModel] = useState("gpt-3.5-turbo");
   const [selectedConversation, setSelectedConversation] = useState(null);
+  const { logout, user } = useAuth();
 
   const handleResult = (output) => {
     setResult(output);
-
-    // Guardar nueva conversación
     saveConversation({
       id: uuidv4(),
       date: new Date().toISOString(),
@@ -33,13 +33,39 @@ function PromptifyApp() {
 
       {/* Área principal */}
       <main className="flex-1 min-h-screen bg-[#0f172a] text-white p-8">
-        <button
-          onClick={() => navigate("/")}
-          className="mb-6 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white"
-        >
-          ← Volver al inicio
-        </button>
+        {/* Top bar con navegación y logout */}
+        <div className="flex justify-between items-center mb-6">
+          {/* Siempre visible */}
+          <button
+            onClick={() => navigate("/")}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white"
+          >
+            ← Volver al inicio
+          </button>
 
+          {/* Info usuario o mensaje si no ha iniciado sesión */}
+          <div className="flex items-center gap-4">
+            {user ? (
+              <>
+                <span className="text-sm text-gray-300 hidden sm:block">
+                  {user.displayName}
+                </span>
+                <button
+                  onClick={logout}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-white text-sm"
+                >
+                  Cerrar sesión
+                </button>
+              </>
+            ) : (
+              <span className="text-sm text-gray-400">
+                No has iniciado sesión
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Selector de modelo */}
         <ModelSelector
           selectedModel={selectedModel}
           setSelectedModel={setSelectedModel}
