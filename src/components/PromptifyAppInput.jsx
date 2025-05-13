@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { getRemainingUses, incrementUsage } from "../utils/usageLimiter"; // ajusta el path si es necesario
 
-function PromptInput({ onResult }) {
+function PromptInput({ onResult, selectedModel }) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [limitReached, setLimitReached] = useState(false);
@@ -25,10 +25,18 @@ function PromptInput({ onResult }) {
       const response = await fetch("http://localhost:3001/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ input }),
+        body: JSON.stringify({
+          input,
+          model: selectedModel, // 👈 enviamos el modelo elegido
+        }),
       });
 
       const data = await response.json();
+      if (!response.ok) {
+        onResult(data.error || "Error inesperado.");
+        return;
+      }
+
       incrementUsage();
       onResult(data.prompt);
     } catch (error) {

@@ -25,7 +25,7 @@ function PromptifyApp() {
         Generador de Prompts de IA
       </h1>
 
-      <PromptInput onResult={setResult} />
+      <PromptInput onResult={setResult} selectedModel={selectedModel} />
 
       {result && (
         <div className="bg-gray-900 p-6 rounded-xl max-w-3xl mx-auto mt-6 border border-gray-700">

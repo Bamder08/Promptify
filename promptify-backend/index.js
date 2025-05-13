@@ -16,19 +16,26 @@ const openai = new OpenAI({
 });
 
 app.post("/api/generate", async (req, res) => {
-  const { input } = req.body;
+  const { input, model } = req.body;
+  console.log("Modelo recibido:", model);
 
   if (!input) {
     return res.status(400).json({ error: "No input provided" });
   }
 
+  const allowedModels = ["gpt-3.5-turbo", "gpt-4"];
+  if (!allowedModels.includes(model)) {
+    return res.status(400).json({ error: "Modelo no permitido" });
+  }
+
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", 
+      model,
       messages: [
         {
           role: "system",
-          content: "Eres un generador de prompts para asistentes de inteligencia artificial. Tu tarea es transformar ideas generales en prompts bien estructurados, claros y específicos.",
+          content:
+            "Eres un generador de prompts para asistentes de inteligencia artificial. Tu tarea es transformar ideas generales en prompts bien estructurados, claros y específicos.",
         },
         {
           role: "user",
@@ -41,9 +48,17 @@ app.post("/api/generate", async (req, res) => {
     const prompt = response.choices[0].message.content;
     res.json({ prompt });
   } catch (error) {
-    console.error("Error al generar prompt:", error);
-    res.status(500).json({ error: "Error al generar prompt" });
-  }
+  console.error("Error al generar prompt:", error);
+
+  const status = error?.status || 500;
+
+  res.status(status).json({
+    error:
+      status === 429
+        ? "Has alcanzado el límite de uso. Intenta mañana."
+        : "Error al generar prompt. Intenta nuevamente.",
+  });
+}
 });
 
 app.listen(PORT, () => {
