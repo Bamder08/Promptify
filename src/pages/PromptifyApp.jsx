@@ -7,6 +7,7 @@ import { saveConversation } from "../utils/historyManager";
 import { v4 as uuidv4 } from "uuid";
 import { useAuth } from "../context/AuthContext";
 import { savePromptToFirestore } from "../firebase/promptService";
+import { motion } from "framer-motion";
 
 function PromptifyApp() {
   const navigate = useNavigate();
@@ -16,26 +17,26 @@ function PromptifyApp() {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const { logout, user } = useAuth();
 
-const handleResult = async (output) => {
-  setResult(output);
+  const handleResult = async (output) => {
+    setResult(output);
 
-  const newPrompt = {
-    input,
-    output,
-    model: selectedModel,
+    const newPrompt = {
+      input,
+      output,
+      model: selectedModel,
+    };
+
+    if (user) {
+      await savePromptToFirestore({ userId: user.uid, ...newPrompt });
+    } else {
+      // Simulación local
+      saveConversation({
+        ...newPrompt,
+        id: uuidv4(),
+        date: new Date().toISOString(),
+      });
+    }
   };
-
-  if (user) {
-    await savePromptToFirestore({ userId: user.uid, ...newPrompt });
-  } else {
-    // Simulación local
-    saveConversation({
-      ...newPrompt,
-      id: uuidv4(),
-      date: new Date().toISOString(),
-    });
-  }
-};
 
   return (
     <div className="flex">
@@ -93,12 +94,17 @@ const handleResult = async (output) => {
         />
 
         {result && (
-          <div className="bg-gray-900 p-6 rounded-xl max-w-3xl mx-auto mt-6 border border-gray-700">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="bg-gray-900 p-6 rounded-xl max-w-3xl mx-auto mt-6 border border-gray-700"
+          >
             <h2 className="text-xl font-semibold mb-3 text-green-400">
               Prompt generado:
             </h2>
             <p className="text-gray-200 whitespace-pre-wrap">{result}</p>
-          </div>
+          </motion.div>
         )}
 
         {selectedConversation && (
