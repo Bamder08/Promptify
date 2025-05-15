@@ -1,19 +1,20 @@
-const STORAGE_KEY = "promptify-history";
+export function saveConversation(convo) {
+  const key = "promptify_history";
+  const history = JSON.parse(localStorage.getItem(key)) || [];
+  history.unshift(convo);
+  localStorage.setItem(key, JSON.stringify(history));
+}
 
-export const getHistory = () => {
-  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-};
+export function loadHistory() {
+  return JSON.parse(localStorage.getItem("promptify_history")) || [];
+}
 
-export const saveConversation = (conversation) => {
-  const current = getHistory();
-  localStorage.setItem(STORAGE_KEY, JSON.stringify([conversation, ...current]));
-};
+export function deleteConversation(id) {
+  const history = loadHistory();
+  const filtered = history.filter((item) => item.id !== id);
+  localStorage.setItem("promptify_history", JSON.stringify(filtered));
+}
 
-export const deleteConversation = (id) => {
-  const filtered = getHistory().filter((c) => c.id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
-};
-
-export const clearHistory = () => {
-  localStorage.removeItem(STORAGE_KEY);
-};
+export function clearHistory() {
+  localStorage.removeItem("promptify_history");
+}

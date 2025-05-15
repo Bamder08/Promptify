@@ -103,7 +103,7 @@ const handleResult = async (output) => {
 
         {selectedConversation && (
           <div className="bg-gray-800 p-6 rounded-xl max-w-3xl mx-auto mt-10 border border-gray-600">
-            <h2 className="text-lg font-semibold mb-2 text-yellow-400">
+            <h2 className="text-lg font-semibold mb-2 text-green-400">
               Conversación anterior seleccionada:
             </h2>
             <p className="text-blue-300 mb-2">
