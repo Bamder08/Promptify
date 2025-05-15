@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import { saveConversation } from "../utils/historyManager";
 import { v4 as uuidv4 } from "uuid";
 import { useAuth } from "../context/AuthContext";
+import { savePromptToFirestore } from "../firebase/promptService";
 
 function PromptifyApp() {
   const navigate = useNavigate();
@@ -15,16 +16,26 @@ function PromptifyApp() {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const { logout, user } = useAuth();
 
-  const handleResult = (output) => {
-    setResult(output);
+const handleResult = async (output) => {
+  setResult(output);
+
+  const newPrompt = {
+    input,
+    output,
+    model: selectedModel,
+  };
+
+  if (user) {
+    await savePromptToFirestore({ userId: user.uid, ...newPrompt });
+  } else {
+    // Simulación local
     saveConversation({
+      ...newPrompt,
       id: uuidv4(),
       date: new Date().toISOString(),
-      input,
-      output,
-      model: selectedModel,
     });
-  };
+  }
+};
 
   return (
     <div className="flex">
