@@ -67,7 +67,6 @@ npm run server      # Express (puerto 3001)
 | `VITE_FIREBASE_API_KEY`   | Credencial pública de Firebase           |
 | `VITE_EMAILJS_PUBLIC_KEY` | Key pública de EmailJS                   |
 | `OPENAI_API_KEY`          | **Solo backend** – key secreta de OpenAI |
-| …                         | (ver `.env.example`)                     |
 
 
 ## 🗺️ Roadmap
