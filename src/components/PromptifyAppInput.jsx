@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { getRemainingUses, incrementUsage } from "../utils/usageLimiter";
-import Loader from "./Loader";
 
-function PromptInput({ onResult, selectedModel, setInput }) {
-  const [localInput, setLocalInput] = useState("");
+function PromptifyAppInput({ onResult, selectedModel, setInput }) {
+  const [inputText, setInputText] = useState("");
   const [loading, setLoading] = useState(false);
   const [limitReached, setLimitReached] = useState(false);
+  const [error, setError] = useState("");
 
   const handleGenerate = async () => {
     const remaining = getRemainingUses();
@@ -15,32 +15,31 @@ function PromptInput({ onResult, selectedModel, setInput }) {
       return;
     }
 
-    if (!localInput.trim()) return;
+    if (!inputText.trim()) {
+      setError("Por favor escribe una descripción.");
+      return;
+    }
 
     setLoading(true);
+    setError("");
+    setInput(inputText); // Guarda en App para historial
 
     try {
       const response = await fetch("http://localhost:3001/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          input: localInput,
+          input: inputText,
           model: selectedModel,
         }),
       });
 
       const data = await response.json();
-
-      if (!response.ok) {
-        onResult(data.error || "Error inesperado.");
-        return;
-      }
-
       incrementUsage();
       onResult(data.prompt);
     } catch (error) {
       console.error("Error generando prompt:", error);
-      onResult("Hubo un error al generar el prompt.");
+      onResult("Ocurrió un error al generar el prompt.");
     } finally {
       setLoading(false);
     }
@@ -48,26 +47,35 @@ function PromptInput({ onResult, selectedModel, setInput }) {
 
   return (
     <div className="bg-gray-800 p-6 rounded-xl shadow-lg mb-6 max-w-3xl mx-auto">
+      <label
+        htmlFor="prompt-text"
+        className="block text-sm mb-2 font-medium text-gray-300"
+      >
+        Describe lo que quieres lograr con tu IA
+      </label>
       <textarea
-        className="w-full p-4 rounded-lg bg-gray-900 text-white border border-gray-600 mb-4 resize-none focus:outline-none"
+        id="prompt-text"
+        name="prompt"
+        aria-label="Prompt para generar"
+        className="w-full p-4 rounded-lg bg-gray-900 text-white border border-gray-600 mb-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
         rows="5"
-        placeholder="Describe lo que quieres lograr con tu IA..."
-        value={localInput}
+        placeholder="Ejemplo: Quiero un prompt para una rutina de gym 5 días a la semana"
+        maxLength={300}
+        value={inputText}
         onChange={(e) => {
-          setLocalInput(e.target.value); // estado local para control del input
-          setInput(e.target.value); // estado global para guardar historial
+          setInputText(e.target.value);
+          if (error) setError("");
         }}
       />
-      {loading ? (
-        <Loader />
-      ) : (
-        <button
-          onClick={handleGenerate}
-          className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg"
-        >
-          Generar Prompt
-        </button>
-      )}
+      {error && <p className="text-red-400 text-sm mb-2">{error}</p>}
+
+      <button
+        onClick={handleGenerate}
+        disabled={loading}
+        className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        {loading ? "Generando..." : "Generar Prompt"}
+      </button>
 
       {limitReached && (
         <p className="mt-4 text-red-400 font-medium text-center">
@@ -78,4 +86,4 @@ function PromptInput({ onResult, selectedModel, setInput }) {
   );
 }
 
-export default PromptInput;
+export default PromptifyAppInput;
