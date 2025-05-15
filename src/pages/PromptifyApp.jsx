@@ -39,12 +39,11 @@ function PromptifyApp() {
   };
 
   return (
-    <div className="flex">
-      {/* Sidebar estilo ChatGPT */}
+    <div className="min-h-screen grid grid-cols-1 md:grid-cols-[250px_1fr]">
       <Sidebar onSelectConversation={setSelectedConversation} />
 
       {/* Área principal */}
-      <main className="flex-1 min-h-screen bg-[#0f172a] text-white p-8">
+      <main className="min-h-screen bg-[#0f172a] text-white px-4 py-8 md:px-10 lg:px-20">
         {/* Top bar con navegación y logout */}
         <div className="flex justify-between items-center mb-6">
           {/* Siempre visible */}

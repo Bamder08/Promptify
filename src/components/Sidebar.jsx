@@ -1,75 +1,78 @@
 import { useEffect, useState } from "react";
-import { getUserPrompts, deletePrompt, deleteAllPrompts } from "../utils/firebasePrompts";
+import { getUserPrompts, deletePrompt } from "../utils/firebasePrompts";
 import { useAuth } from "../context/AuthContext";
-import { FiTrash } from "react-icons/fi";
+import { FaTrash } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 function Sidebar({ onSelectConversation }) {
   const { user } = useAuth();
-  const [prompts, setPrompts] = useState([]);
+  const [history, setHistory] = useState([]);
+  const [open, setOpen] = useState(false);
 
-  // Cargar historial del usuario
   useEffect(() => {
-    const fetchPrompts = async () => {
-      if (user) {
-        const data = await getUserPrompts(user.uid);
-        setPrompts(data);
-      }
-    };
-    fetchPrompts();
+    if (user) {
+      getUserPrompts(user.uid).then(setHistory);
+    }
   }, [user]);
 
   const handleDelete = async (id) => {
-    if (!user) return;
-    await deletePrompt(user.uid, id);
-    setPrompts((prev) => prev.filter((p) => p.id !== id));
+    const confirmed = confirm("¿Eliminar este prompt?");
+    if (confirmed) {
+      await deletePrompt(user.uid, id);
+      setHistory(history.filter((p) => p.id !== id));
+    }
   };
 
-  const handleDeleteAll = async () => {
-    if (!user) return;
-    const confirm = window.confirm("¿Seguro que deseas eliminar todo tu historial?");
-    if (!confirm) return;
-    await deleteAllPrompts(user.uid);
-    setPrompts([]);
+  const handleClearAll = async () => {
+    const confirmed = confirm("¿Seguro que deseas eliminar TODO el historial?");
+    if (confirmed) {
+      for (const p of history) {
+        await deletePrompt(user.uid, p.id);
+      }
+      setHistory([]);
+    }
   };
 
   return (
-    <aside className="w-64 bg-[#0e152a] min-h-screen p-4 border-r border-gray-700">
-      <h2 className="text-white text-lg font-semibold mb-4">Historial</h2>
+    <>
+      {/* Botón hamburguesa */}
+      <button
+        className="md:hidden absolute top-4 left-4 z-50 bg-gray-800 text-white px-3 py-2 rounded"
+        onClick={() => setOpen(!open)}
+      >
+        ☰
+      </button>
 
-      {prompts.length === 0 ? (
-        <p className="text-gray-400 text-sm">No hay prompts guardados.</p>
-      ) : (
-        <div className="space-y-2">
-          {prompts.map((conv) => (
-            <div
-              key={conv.id}
-              className="flex items-center justify-between bg-gray-700 hover:bg-gray-600 p-3 rounded-lg"
-            >
-              <button
-                className="text-left text-sm flex-1 text-white"
-                onClick={() => onSelectConversation(conv)}
-              >
-                {conv.input.slice(0, 40)}...
+      {/* Sidebar */}
+      <motion.aside
+        initial={{ x: -300 }}
+        animate={{ x: open || window.innerWidth >= 768 ? 0 : -300 }}
+        transition={{ type: "spring", stiffness: 100 }}
+        className="fixed top-0 left-0 bottom-0 w-64 bg-[#0d1628] text-white px-4 py-6 border-r border-gray-700 md:relative md:translate-x-0 z-40"
+      >
+        <h2 className="text-xl font-bold mb-4">Historial</h2>
+
+        <div className="flex flex-col gap-2 max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
+          {history.map((item) => (
+            <div key={item.id} className="flex justify-between items-center bg-gray-800 px-3 py-2 rounded text-sm">
+              <button onClick={() => onSelectConversation(item)} className="text-left w-full truncate mr-2">
+                {item.input.slice(0, 50)}...
               </button>
-              <button
-                onClick={() => handleDelete(conv.id)}
-                className="ml-2 text-red-400 hover:text-red-600"
-                title="Eliminar"
-              >
-                <FiTrash />
-              </button>
+              <FaTrash
+                onClick={() => handleDelete(item.id)}
+                className="text-red-400 hover:text-red-600 cursor-pointer"
+              />
             </div>
           ))}
+        </div>
 
-          <button
-            onClick={handleDeleteAll}
-            className="mt-4 text-sm text-red-400 hover:text-red-600"
-          >
+        {history.length > 0 && (
+          <button onClick={handleClearAll} className="mt-6 text-sm text-red-400 hover:text-red-600">
             Eliminar todo
           </button>
-        </div>
-      )}
-    </aside>
+        )}
+      </motion.aside>
+    </>
   );
 }
 
