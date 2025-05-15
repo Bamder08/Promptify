@@ -3,10 +3,6 @@
 Promptify es una aplicación **full‑stack** que ayuda a redactorxs, marketers y devs a construir prompts de alta calidad para asistentes de IA (GPT‑3.5 / GPT‑4, Gemini, etc.).
 Combina un frontend moderno y animado con un backend Node/Express que consume la API de OpenAI y persiste el historial de cada usuari@ en Firebase Firestore.
 
-<p align="center">
-  <img src="https://github.com/Bamder08/Promptify/tree/main/public/preview.gif" width="700" alt="Demo de Promptify">
-</p>
-
 ---
 
 ## ⚡ Highlights
