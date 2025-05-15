@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { getRemainingUses, incrementUsage } from "../utils/usageLimiter";
+import Loader from "./Loader";
 
 function PromptInput({ onResult, selectedModel, setInput }) {
   const [localInput, setLocalInput] = useState("");
@@ -53,17 +54,21 @@ function PromptInput({ onResult, selectedModel, setInput }) {
         placeholder="Describe lo que quieres lograr con tu IA..."
         value={localInput}
         onChange={(e) => {
-          setLocalInput(e.target.value);  // estado local para control del input
-          setInput(e.target.value);       // estado global para guardar historial
+          setLocalInput(e.target.value); // estado local para control del input
+          setInput(e.target.value); // estado global para guardar historial
         }}
       />
-      <button
-        onClick={handleGenerate}
-        className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg"
-        disabled={loading}
-      >
-        {loading ? "Generando..." : "Generar Prompt"}
-      </button>
+      {loading ? (
+        <Loader />
+      ) : (
+        <button
+          onClick={handleGenerate}
+          className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg"
+        >
+          Generar Prompt
+        </button>
+      )}
+
       {limitReached && (
         <p className="mt-4 text-red-400 font-medium text-center">
           Has alcanzado el límite gratuito de hoy. Intenta nuevamente mañana.
