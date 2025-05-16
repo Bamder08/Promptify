@@ -6,6 +6,7 @@ function PromptifyAppInput({ onResult, selectedModel, setInput }) {
   const [loading, setLoading] = useState(false);
   const [limitReached, setLimitReached] = useState(false);
   const [error, setError] = useState("");
+  
 
   const handleGenerate = async () => {
     const remaining = getRemainingUses();
@@ -24,8 +25,10 @@ function PromptifyAppInput({ onResult, selectedModel, setInput }) {
     setError("");
     setInput(inputText); // Guarda en App para historial
 
+    const API_URL = import.meta.env.VITE_API_URL;
+
     try {
-      const response = await fetch("https://promptify-backend-ctt8.onrender.com/api/generate", {
+      const response = await fetch(`${API_URL}/api/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
