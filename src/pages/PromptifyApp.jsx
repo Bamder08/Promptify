@@ -26,9 +26,6 @@ function PromptifyApp() {
       model: selectedModel || "gpt-3.5-turbo",
     };
 
-    // ningún campo debe ser undefined / vacío
-    if (!newPrompt.input || !newPrompt.output) return;
-
     if (user) {
       console.log("🔥 Guardando en Firestore…");
       await savePromptToFirestore({ userId: user.uid, ...newPrompt });
