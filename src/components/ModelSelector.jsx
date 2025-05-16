@@ -3,8 +3,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
 const models = [
-  { name: "GPT-3.5", value: "gpt-3.5-turbo" },
-  { name: "GPT-4", value: "gpt-4" }
+  { name: "GPT-3.5", value: "gpt-3.5-turbo" }
 ];
 
 export default function ModelSelector({ selectedModel, setSelectedModel }) {

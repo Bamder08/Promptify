@@ -18,14 +18,6 @@ function PromptifyApp() {
   const { logout, user } = useAuth();
 
   const handleResult = async (output) => {
-    -setResult(output);
-
-    // si el backend devolvió un mensaje de error, no guardes nada
-    if (!output || typeof output !== "string") {
-      setResult(output); // aún lo mostramos en pantalla
-      return; //  ⟵  NO guardamos en Firestore
-    }
-
     setResult(output); // ahora sí es un string válido
 
     const newPrompt = {

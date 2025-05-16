@@ -6,7 +6,6 @@ function PromptifyAppInput({ onResult, selectedModel, setInput }) {
   const [loading, setLoading] = useState(false);
   const [limitReached, setLimitReached] = useState(false);
   const [error, setError] = useState("");
-  
 
   const handleGenerate = async () => {
     const remaining = getRemainingUses();
@@ -31,18 +30,23 @@ function PromptifyAppInput({ onResult, selectedModel, setInput }) {
       const response = await fetch(`${API_URL}/api/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          input: inputText,
-          model: selectedModel,
-        }),
+        body: JSON.stringify({ input: inputText, model: selectedModel }),
       });
 
       const data = await response.json();
+
+      // Si falla, construimos un mensaje manual
+      if (!response.ok || !data.prompt) {
+        throw new Error(data.error || `Error ${response.status}`);
+      }
+
       incrementUsage();
-      onResult(data.prompt);
-    } catch (error) {
-      console.error("Error generando prompt:", error);
-      onResult("Ocurrió un error al generar el prompt.");
+      onResult(data.prompt); // ✅ se guardará como antes
+    } catch (err) {
+      console.warn("Falla API, guardando con mensaje de error…");
+      const fallback =
+        "⚠️ No se pudo generar el prompt porque se alcanzó el límite gratuito.";
+      onResult(fallback); // ⬅️ texto que sí se guarda en Firestore
     } finally {
       setLoading(false);
     }
