@@ -30,23 +30,29 @@ function PromptifyAppInput({ onResult, selectedModel, setInput }) {
       const response = await fetch(`${API_URL}/api/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ input: inputText, model: selectedModel }),
+        body: JSON.stringify({
+          input: inputText,
+          model: selectedModel,
+        }),
       });
 
       const data = await response.json();
 
-      // Si falla, construimos un mensaje manual
       if (!response.ok || !data.prompt) {
         throw new Error(data.error || `Error ${response.status}`);
       }
 
       incrementUsage();
-      onResult(data.prompt); // ✅ se guardará como antes
+      onResult(data.prompt);
     } catch (err) {
-      console.warn("Falla API, guardando con mensaje de error…");
-      const fallback =
-        "⚠️ No se pudo generar el prompt porque se alcanzó el límite gratuito.";
-      onResult(fallback); // ⬅️ texto que sí se guarda en Firestore
+      console.error("Error generando prompt:", err);
+
+      // Mensaje de fallback
+      const fallbackPrompt =
+        "⚠️ No se pudo generar el prompt porque se alcanzó el límite de la API o hubo un error.";
+
+      // Forzamos guardar en historial igual
+      onResult(fallbackPrompt);
     } finally {
       setLoading(false);
     }
