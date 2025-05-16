@@ -34,7 +34,7 @@ Combina un frontend moderno y animado con un backend Node/Express que consume la
 
 ## 🚀 Deploy
 
-> **[https://promptify.vercel.app](https://promptify.vercel.app)**
+> **[https://promptify-three.vercel.app/](https://promptify-three.vercel.app/)**
 
 (Si aparece *“límite diario alcanzado”* usa otra cuenta Google o vuelve mañana 😉).
 
