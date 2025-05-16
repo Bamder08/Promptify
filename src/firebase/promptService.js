@@ -1,11 +1,12 @@
 import { db } from "./firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
-/**
- * Guarda un prompt en Firestore bajo el usuario autenticado.
- */
 export const savePromptToFirestore = async ({ userId, input, output, model }) => {
-  console.log("→ savePromptToFirestore", { userId, input, output, model });
+  if (!input || !output || !model || !userId) {
+    console.warn("❌ Datos inválidos. No se guardará en Firestore.");
+    return;
+  }
+
   try {
     const promptsRef = collection(db, "users", userId, "prompts");
     await addDoc(promptsRef, {
@@ -14,8 +15,8 @@ export const savePromptToFirestore = async ({ userId, input, output, model }) =>
       model,
       createdAt: serverTimestamp(),
     });
+    console.log("✅ Guardado en Firestore");
   } catch (error) {
-    console.error("Error guardando el prompt en Firestore:", error);
-    throw error;
+    console.error("🔥 Error guardando el prompt en Firestore:", error);
   }
 };
