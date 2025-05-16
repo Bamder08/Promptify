@@ -18,18 +18,29 @@ function PromptifyApp() {
   const { logout, user } = useAuth();
 
   const handleResult = async (output) => {
-    setResult(output);
+    -setResult(output);
+
+    // si el backend devolvió un mensaje de error, no guardes nada
+    if (!output || typeof output !== "string") {
+      setResult(output); // aún lo mostramos en pantalla
+      return; //  ⟵  NO guardamos en Firestore
+    }
+
+    setResult(output); // ahora sí es un string válido
 
     const newPrompt = {
-      input,
-      output,
-      model: selectedModel,
+      input: input?.trim(),
+      output: output.trim(),
+      model: selectedModel || "gpt-3.5-turbo",
     };
 
+    // ningún campo debe ser undefined / vacío
+    if (!newPrompt.input || !newPrompt.output) return;
+
     if (user) {
+      console.log("🔥 Guardando en Firestore…");
       await savePromptToFirestore({ userId: user.uid, ...newPrompt });
     } else {
-      // Simulación local
       saveConversation({
         ...newPrompt,
         id: uuidv4(),

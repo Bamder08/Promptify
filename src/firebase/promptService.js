@@ -5,6 +5,7 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
  * Guarda un prompt en Firestore bajo el usuario autenticado.
  */
 export const savePromptToFirestore = async ({ userId, input, output, model }) => {
+  console.log("→ savePromptToFirestore", { userId, input, output, model });
   try {
     const promptsRef = collection(db, "users", userId, "prompts");
     await addDoc(promptsRef, {
