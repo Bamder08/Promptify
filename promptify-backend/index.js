@@ -23,7 +23,7 @@ app.post("/api/generate", async (req, res) => {
     return res.status(400).json({ error: "No input provided" });
   }
 
-  const allowedModels = ["gpt-3.5-turbo", "gpt-4"];
+  const allowedModels = ["gpt-3.5-turbo"];
   if (!allowedModels.includes(model)) {
     return res.status(400).json({ error: "Modelo no permitido" });
   }
