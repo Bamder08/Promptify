@@ -19,10 +19,11 @@ function PromptifyApp() {
 
   const handleResult = async (output) => {
     setResult(output); // ahora sí es un string válido
+    if (!output) return; 
 
     const newPrompt = {
-      input: input?.trim(),
-      output: output.trim(),
+      input: input,
+      output: output,
       model: selectedModel || "gpt-3.5-turbo",
     };
 
