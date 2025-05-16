@@ -1,6 +1,6 @@
 # Promptify – Generador de Prompts para IA
 
-Promptify es una aplicación **full‑stack** que ayuda a redactorxs, marketers y devs a construir prompts de alta calidad para asistentes de IA (GPT‑3.5 / GPT‑4, Gemini, etc.).
+Promptify es una aplicación **full‑stack** que ayuda a redactorxs, marketers y devs a construir prompts de alta calidad para asistentes de IA.
 Combina un frontend moderno y animado con un backend Node/Express que consume la API de OpenAI y persiste el historial de cada usuari@ en Firebase Firestore.
 
 ---
@@ -9,7 +9,7 @@ Combina un frontend moderno y animado con un backend Node/Express que consume la
 
 | Función                      | Detalles                                                      |
 | ---------------------------- | ------------------------------------------------------------- |
-| ✨ **Generación de prompts**  | Soporta GPT‑3.5 y GPT‑4 (backend Node + OpenAI SDK).          |
+| ✨ **Generación de prompts**  | Soporta GPT‑3.5 (backend Node + OpenAI SDK).                 |
 | 🔒 **Auth Google**           | Firebase Auth + RTK Query; login / logout en un clic.         |
 | 💾 **Historial persistente** | Firestore por usuario, con CRUD (eliminar individual o todo). |
 | 📱 **Responsive first**      | Grid + Tailwind; sidebar colapsable en móvil.                 |
